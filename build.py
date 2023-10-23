@@ -358,6 +358,10 @@ class DockerBuilder:
                 stderr=subprocess.DEVNULL,
                 stdout=subprocess.DEVNULL,
             )
+           
+            print(f"buildah from --arch {arch} --name {builder}{distroless_builder}")
+
+
             run(
                 [
                     "buildah",
@@ -489,7 +493,7 @@ class DockerBuilder:
         tags = self.tags.tags(self.branch, image)
         manifest = self.render_full_tag(image, tags[0])
 
-        msg = "Building image {} for {} arches".format(
+        msg = "1 Building image {} for {} arches".format(
             manifest,
             arches,
         )
@@ -527,6 +531,7 @@ class DockerBuilder:
         for tag in tags[1:]:
             other_manifest = self.render_full_tag(image, tag)
             tag_cmd = ["podman", "tag", manifest, other_manifest]
+            print(tag_cmd)
             self.run(tag_cmd)
 
     def podman_build(self, image: Image, arches):
@@ -540,7 +545,7 @@ class DockerBuilder:
         tags = self.tags.tags(self.branch, image)
         manifest = self.render_full_tag(image, tags[0])
 
-        msg = "Building image {} for {} arches".format(
+        msg = "2 Building image {} for {} arches".format(
             manifest,
             arches,
         )
@@ -594,20 +599,20 @@ class DockerBuilder:
         tags = self.tags.tags(self.branch, image)
         manifests = [self.render_full_tag(image, t) for t in tags]
 
-        for manifest in manifests:
-            print(f"Push manifest {manifest}")
-            cmd = [
-                "podman",
-                "manifest",
-                "push",
-                manifest,
-                f"docker://{manifest}",
-            ]
+        # for manifest in manifests:
+        #     print(f"Push manifest {manifest}")
+        #     cmd = [
+        #         "podman",
+        #         "manifest",
+        #         "push",
+        #         manifest,
+        #         f"docker://localhost:5000",
+        #     ]
 
-            if sign is not None:
-                cmd.append(f"--sign-by={sign}")
+        #     if sign is not None:
+        #         cmd.append(f"--sign-by={sign}")
 
-            self.run(cmd)
+        #     self.run(cmd)
 
 
 class ImagesInfo:

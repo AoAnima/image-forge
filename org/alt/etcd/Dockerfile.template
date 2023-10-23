@@ -1,9 +1,0 @@
-FROM {{ registry }}{{ alt_image }}:{{ branch }}
-
-MAINTAINER alt-cloud
-
-{{ install_pakages("etcd") }}
-
-VOLUME /data
-
-ENTRYPOINT ["/usr/sbin/etcd", "--data-dir", "/data"]

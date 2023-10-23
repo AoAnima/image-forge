@@ -1,9 +1,0 @@
-FROM {{ registry }}{{ alt_image }}:{{ branch }}
-
-MAINTAINER alt-cloud
-
-{{ install_pakages("apache2") }}
-
-EXPOSE 80
-
-CMD ["/usr/sbin/httpd2", "-D", "NO_DETACH", "-k", "start"]
